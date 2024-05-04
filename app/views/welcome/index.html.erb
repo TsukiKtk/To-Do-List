@@ -1,0 +1,17 @@
+<h1>Welcome#index</h1>
+<% @task_list.each do |task| %>
+  <%= render partial: "task_desc", locals: { task_desc: task } %>
+  <strong><%= label_tag :completed, "Marcar Como concluido" %></strong>
+
+    <%= form_tag '/welcome', remote: true, method: :post do %>
+    <%= check_box :completed, task_id: task.id %>
+    <%= submit_tag 'Marcar' %>
+    <% end %>
+
+<% end %><br>
+<%= "-"*70 %>
+
+
+
+<%#= date_field(:user, :born_on) %>
+<%#= select_date Date.today, prefix: :start_date %>
