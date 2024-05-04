@@ -1,7 +1,9 @@
 <h1>Welcome#index</h1>
 <% @task_list.each do |task| %>
-  <%= render partial: "task_desc", locals: { task_desc: task } %>
-  <strong><%= label_tag :completed, "Marcar Como concluido" %></strong>
+  <div id="task_<%= task.id %>">
+    <strong><%= render partial: "task_desc", locals: { task_desc: task } %><strong>
+  </div>
+  <%= label_tag :completed, "Marcar Como concluido" %>
 
     <%= form_tag '/welcome', remote: true, method: :post do %>
     <%= check_box :completed, task_id: task.id %>
@@ -11,7 +13,26 @@
 <% end %><br>
 <%= "-"*70 %>
 
-
+<%= render "completed_tasks" %>
 
 <%#= date_field(:user, :born_on) %>
 <%#= select_date Date.today, prefix: :start_date %>
+<script>
+  let retornoFromWelcomeController = <%= raw @retorno.to_json %>;
+  let id_task_feitaFromWelcomeController = <%= raw @id_task_feita.to_json %>;
+
+  function complet_task(retornoFromWelcomeController, id_task_feitaFromWelcomeController) {
+    if (retornoFromWelcomeController === 1) {
+      console.log(`ID da task concluída: ${id_task_feitaFromWelcomeController}`);
+      // Adicione a classe CSS à tarefa marcada como concluída
+      document.getElementById(`task_${id_task_feitaFromWelcomeController}`).style.textDecoration = 'line-through';
+      
+    } else {
+      console.log(`Não foi clicado: ${retornoFromWelcomeController}`);
+      console.log(`ID da task feita: ${id_task_feitaFromWelcomeController}`);
+    }
+  }
+  
+  complet_task(retornoFromWelcomeController, id_task_feitaFromWelcomeController);
+  
+</script>
